@@ -22,15 +22,18 @@ class Product:
 # 테스트 코드
 # ------------------------------------------------------------------
 
-products = [
-    Product('무선 이어폰', 80_000, 3),
-    Product('텀플러', 30_000, 10),
-    Product('보조 배터리', 32_000, 10),
-    Product('마우스패드', 9_000, 10),
-    Product('USB 허브', 30_000, 10),
-]        
+if __name__ == "__main__":
+    products = [
+        Product('무선 이어폰', 80_000, 3),
+        Product('텀플러', 30_000, 10),
+        Product('보조 배터리', 32_000, 10),
+        Product('마우스패드', 9_000, 10),
+        Product('USB 허브', 30_000, 10),
+    ]        
 
-
-for p in products: print(p)
+    # 출력코드 - import하면 파일에 있는 실행코드를 실행 시킴,
+    # 안할려면 if __name__ = '__main__' 조건을 걸어야함.
+    # name이 시작점이 어디냐. 
+    for p in products: print(p)
 
 
