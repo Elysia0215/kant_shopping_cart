@@ -51,20 +51,60 @@ class Cart:
     def subtotal(self):
         return sum( p.price * q for p,q in self.items.items())
     
+    # 배송비 계산
+    def shipping(self):
+        if self.is_empty(): return 0 # 아예 장바구니가 비어있음 0
+        return 0 if self.subtotal() >= 30_000 else 3_000 # 3만원 이상이면 return 0, 아니면 3_000
+    # 결제 금액 계산
+    def total(self):
+        return self.subtotal() + self.shipping()
+    
+    # 장바구니 내용 출력
+    def show(self):
+        line = '-' * 40 # 반복 print('-'*40) 꼼수
+        print(line)
+        
+        if self.is_empty():
+            print('장바구니 비어 있습니다.')
+            
+        for p, q in self.items.items():
+            # 제품명 x 가격 x 수량 = 금액
+            print(f'{p.name:<10} x {q:<3} = {p.price * q:12,}원')      
+        print(line)
+        print(f"{'상품합계':<10} {self.subtotal():>15,}원")
+        print(f"{'배송비':<10} {self.shipping():>15,}원")  
+        print(f"{'결제 금액':<10} {self.total():>15,}원")
+        print(line)
+    def checkout(self):
+        if self.is_empty():return
+        
+        self.show()
+        # 재고 감소 처리
+        for p,q in self.items.items():
+            p.stock -= q # 장바구니에 담긴 수량 만큼 빼주기
+        # 장바구니 비우기
+        self.items.clear #clear dict을 깨끗하게 지우는 함수
+        
+        # 결제 성공여부 SKIP(Y/N)
+        print('결제가 완료 되었습니다. 감사합니다.')
+    
 # ------------------------------------------------------------------
 # 테스트 코드
 # ------------------------------------------------------------------
 
 # 제품 인스턴스 생성
 tumbler = Product('텀블러',15_000,10)
-mousepad = Product('마우스 패드',9_000,0)
+earphone = Product('무선이어폰',89_000,3)
 
 # 카트 인스턴스 생성
 cart = Cart()
-cart.add(tumbler, 10)
-cart.remove(tumbler, 3)
-cart.remove(mousepad, 1)
-cart.remove(tumbler, 8) # 현재 재고 7 < 8 => 전체 삭제
+
+cart.show()
+cart.add(tumbler, 1)
+cart.show()
+cart.add(earphone, 2)
+cart.show()
+
 
 print('남은 종류 : ', len(cart.items))
 
